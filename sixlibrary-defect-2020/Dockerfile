@@ -1,4 +1,4 @@
-FROM ubuntu as builder
+FROM ubuntu:24.10 as builder
 
 RUN apt-get clean && apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --fix-missing -y \
     clang cmake build-essential libc6-dbg git
@@ -10,7 +10,7 @@ COPY cmake.patch .
 RUN git apply cmake.patch
 RUN mkdir build && cd build && cmake -DENABLE_PYTHON=OFF --target=test_extract_xml .. && make -j4
 
-FROM ubuntu
+FROM ubuntu:24.10
 
 RUN apt-get update && apt-get install -y libc6-dbg
 
